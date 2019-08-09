@@ -22,7 +22,7 @@ public class Car {
 	public Car(String make, String model, String fuel, double RRP, double dailyRentPrice, String transmission,
 			String registrationYear, String colour, List<String> modification, String status) {
 		
-		this.id = ThreadLocalRandom.current().nextInt();
+		this.id = (int)(Math.random()* 1000+1); 
 		this.make = make;
 		this.model = model;
 		this.fuel = fuel;

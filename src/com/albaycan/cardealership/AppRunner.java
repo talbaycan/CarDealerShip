@@ -26,7 +26,7 @@ public class AppRunner {
 		choice = input.nextInt();					
 			
 		switch (choice) {
-		case 1:
+		case 1: 
 			carDealerShipManager();		
 			break;
 		case 2:
@@ -96,8 +96,10 @@ public class AppRunner {
 	
 	public static void carDealerShipManager() {
 		
+		addDummyCar();
+
 		do {
-		
+			
 		System.out.println(dealershipMenuText());
 		choice = input.nextInt();
 		
@@ -185,34 +187,54 @@ public class AppRunner {
 		
 	}
 	
-	public static void modifyCar() {
+	public static String modifyCar() {
 		
 		System.out.println("Please write the ID of the car you would like to modify:");
 		choice = input.nextInt();
 		
 		Car car = carDealerShip.getCar(choice);
 		
-		System.out.printf("Please write the Modification for %s %s:", car.getMake(), car.getModel());
+		System.out.printf("Please write the Modification for %s %s:\n", car.getMake(), car.getModel());
 		choiceStr = input.next();
 		
 		carDealerShip.modifyCar(choice, choiceStr);
+		
+		System.out.printf("%s modification has been added to your %s %s\n", choiceStr, car.getMake(), car.getModel());
+		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu");
+		return choiceStr = input.next();
 	}
 	
-	public static void listAllCars() {
+	public static String listAllCars() {
 		
-		List<Car> carList = carDealerShip.listAllCars();
-		
-		//make, model, fuel, RRP, dailyRentPrice, transmission, registrationYear, status
+		List<Car> carList = carDealerShip.listAllCars();		
 		
 		System.out.println("***********List of All The Cars************\n\n");
-		System.out.println("------|--------------|--------------|----------|--------|-----|----------|------|------------|-------\n");
-				
-		for(Car car:carList) {
-			System.out.printf("|%-8d|%-12s|%-12s|%-8s|%-f|%-f|%-8s|%-6s|%-12s|\n", car.getId(), car.getMake(), car.getModel(), car.getFuel(), car.getRRP()
-				, car.getDailyRentPrice(), car.getTransmission(), car.getRegistrationYear(), car.getStatus());
+		System.out.println("------|------------|------------|--------|------------|----------|----------|------|------------");
+		System.out.println("Id    |Make        |Model       |Fuel    |RRP         |Rent Price|Transm.   |Reg Y.|Status      ");
+		System.out.println("------|------------|------------|--------|------------|----------|----------|------|------------");
+		
+		for(Car car:carList) {		
+		
+			System.out.printf("%-6d|%-12s|%-12s|%-8s|%-10f|%-6f|%-10s|%-6s|%-12s\n", car.getId(), car.getMake(), car.getModel(), car.getFuel(), car.getRRP()
+					, car.getDailyRentPrice(), car.getTransmission(), car.getRegistrationYear(), car.getStatus());
 		}
 		
+		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu");
+		return choiceStr = input.next();
+		
 	}
+	
+	
+	public static void addDummyCar() {
+							
+		List<String> modification = new ArrayList<String>();
+		modification.add("Leather Seat");
+		
+		Car car = new Car("Porsche", "Cayenne", "Petrol", 50000.00, 250.00, "Automatic", "2011", "Dark Blue", modification, "Rentable");
+		
+		carDealerShip.addCar(car);
+	}
+	
 	
 	public static void sellACarManager() {
 		
