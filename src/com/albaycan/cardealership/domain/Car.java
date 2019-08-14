@@ -19,6 +19,10 @@ public class Car {
 	private String status;
 	private LocalDateTime createDateTime;
 	
+	public Car () {
+		
+	}
+	
 	public Car(String make, String model, String fuel, double RRP, double dailyRentPrice, String transmission,
 			String registrationYear, String colour, List<String> modification, String status) {
 		

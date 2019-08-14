@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.albaycan.cardealership.domain.Car;
+import com.albaycan.cardealership.domain.CarSell;
 import com.albaycan.cardealership.service.CarDealerShip;
 import com.albaycan.cardealership.service.CarDealerShipImp;
+import com.albaycan.cardealership.service.SellACar;
+import com.albaycan.cardealership.service.SellACarImp;
 
 public class AppRunner {
 
@@ -16,6 +19,7 @@ public class AppRunner {
 	static double choiceDbl;
 	
 	static CarDealerShip carDealerShip = new CarDealerShipImp();
+	static SellACar sellACar = new SellACarImp();
 
 	public static void main(String[] args) {
 		
@@ -35,12 +39,10 @@ public class AppRunner {
 		case 3:
 			rentACarManager();			
 			break;
-		 default:
-		     System.out.println("Your selection is not in the menu, please select again");
-		     break;
+
 		}
 		
-		} while(choice!=1 && choice!=2 && choice!=3);
+		} while(choiceStr.equals("M"));
 		
 	}
 
@@ -60,7 +62,7 @@ public class AppRunner {
 		
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("Welcome to Car DealerShip Manager Menu\n");
+		sb.append("\nWelcome to Car DealerShip Manager Menu\n");
 		sb.append("Please select 1 of these:\n\n");
 		sb.append("1. Add New Car\n");
 		sb.append("2. Modify Car\n");
@@ -76,7 +78,7 @@ public class AppRunner {
 		sb.append("Welcome to Sell a Car Manager Menu\n");
 		sb.append("Please select 1 of these:\n\n");
 		sb.append("1. Sell a Car\n");
-		sb.append("2. List All Salable Cars\n");
+		sb.append("2. List Sold Cars\n");
 	
 		return sb.toString();
 	}
@@ -94,11 +96,9 @@ public class AppRunner {
 		return sb.toString();
 	}
 	
-	public static void carDealerShipManager() {
-		
-		addDummyCar();
+	public static String carDealerShipManager() {		
 
-		do {
+		do {			
 			
 		System.out.println(dealershipMenuText());
 		choice = input.nextInt();
@@ -111,14 +111,17 @@ public class AppRunner {
 			modifyCar();			
 			break;
 		case 3:
-			listAllCars();			
+			listAllCars(); 
 			break;
-		 default:
-		     System.out.println("Your selection is not in the menu, please select again");
-		     break;
+		case 4:
+			addDummyCar();
+			break;
+		
 		}
 		
 		} while (choiceStr.equals("B"));
+		
+		return choiceStr;
 					
 	}
 	
@@ -170,11 +173,8 @@ public class AppRunner {
 					
 		List<String> modification = new ArrayList<String>();
 		modification.add(choiceStr);
-		
-		System.out.println("Please write Car's Status:");
-		choiceStr = input.next();
 			
-		String status= choiceStr;
+		String status= "New";
 		
 		Car car= new Car(make, model, fuel, RRP, dailyRentPrice, transmission, registrationYear, colour, modification, status);
 		
@@ -182,7 +182,7 @@ public class AppRunner {
 		
 		System.out.printf("The car has been added to the system with %d id\n\n", car.getId());
 		
-		System.out.println("Press 'B' to go back to Car DealerShip Manager Menu");
+		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu or Press 'M' to go back to Main Menu");
 		return choiceStr = input.next();
 		
 	}
@@ -200,7 +200,7 @@ public class AppRunner {
 		carDealerShip.modifyCar(choice, choiceStr);
 		
 		System.out.printf("%s modification has been added to your %s %s\n", choiceStr, car.getMake(), car.getModel());
-		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu");
+		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu or Press 'M' to go back to Main Menu");
 		return choiceStr = input.next();
 	}
 	
@@ -219,29 +219,115 @@ public class AppRunner {
 					, car.getDailyRentPrice(), car.getTransmission(), car.getRegistrationYear(), car.getStatus());
 		}
 		
-		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu");
+		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu or Press 'M' to go back to Main Menu");
 		return choiceStr = input.next();
 		
 	}
 	
 	
-	public static void addDummyCar() {
+	public static String addDummyCar() {
 							
 		List<String> modification = new ArrayList<String>();
 		modification.add("Leather Seat");
 		
-		Car car = new Car("Porsche", "Cayenne", "Petrol", 50000.00, 250.00, "Automatic", "2011", "Dark Blue", modification, "Rentable");
+		Car car = new Car("Porsche", "Cayenne", "Petrol", 50000.00, 250.00, "Automatic", "2011", "Dark Blue", modification, "New");
 		
 		carDealerShip.addCar(car);
+		
+		System.out.printf("Your dummy car has been added to the system with %d id\n\n", car.getId());
+		
+		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu or Press 'M' to go back to Main Menu");
+		return choiceStr = input.next();
 	}
 	
 	
 	public static void sellACarManager() {
 		
+		do {
+		
 		System.out.println(sellingMenuText());
+		choice = input.nextInt();
+		
+		switch (choice) {
+		
+		case 1: 
+			sellACar();
+			break;
+			
+		case 2:
+			listSoldCars();
+			break;
+		}
+		
+		} while (choiceStr.equals("B"));
 					
 	}
 	
+
+	private static String sellACar() {
+	
+			
+		System.out.println("Please write the Id of the car you would like to sell:");
+		choice = input.nextInt();
+		
+		Car car = new Car();
+		
+		do {
+			
+		car = carDealerShip.getCar(choice);
+		
+		if (car.getStatus().equals("Sold") || car.getStatus().equals("Rented")) {
+			System.out.printf("This car is %s already, please try a different car\n", car.getStatus());
+			choice = input.nextInt();
+		}
+
+		} while (car.getStatus().equals("Sold") || car.getStatus().equals("Rented"));
+		
+
+		System.out.printf("You are selling a %s %s\n", car.getMake(), car.getModel());
+		System.out.printf("It's RRP is %f, how much you would like to sell it for?\n",car.getRRP());
+		double sellPrice = input.nextDouble();
+		
+		System.out.println("Customer Name:");		
+		String customerName = input.next();
+		
+		System.out.println("Customer Address:");
+		String customerAddress = input.next();
+		
+		System.out.println("Customer Postcode:");
+		String customerPostcode = input.next();
+		
+		System.out.println("Customer Country:");
+		String customerCountry = input.next();
+		
+		System.out.println("Customer Phone:");
+		String customerPhone = input.next();
+		
+		System.out.println("Customer Email:");
+		String customerEmail = input.next();
+		
+		CarSell carSell = new CarSell(choice, sellPrice, customerEmail, customerEmail, customerEmail, customerEmail, customerEmail, customerEmail);
+		
+			
+		sellACar.sellACar(carSell);
+		
+		String status = "Sold";
+		carDealerShip.statusUpdate(choice, status);
+		
+		System.out.printf("You have sold the %s %s to %s\n", car.getMake(), car.getModel(), customerName);
+		
+		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu or Press 'M' to go back to Main Menu");
+		return choiceStr = input.next();		
+			
+		
+	}
+
+	private static void listSoldCars() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
 	public static void rentACarManager() {
 		
 		System.out.println(rentingMenuText());

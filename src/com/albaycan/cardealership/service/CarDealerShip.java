@@ -10,5 +10,6 @@ public interface CarDealerShip {
 	void modifyCar(int choice, String choiceStr);
 	List<Car> listAllCars();
 	Car getCar(int choice);
+	void statusUpdate(int choice, String status);
 	
 }

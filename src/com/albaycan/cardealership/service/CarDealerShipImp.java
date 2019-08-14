@@ -44,4 +44,12 @@ public class CarDealerShipImp implements CarDealerShip {
 		return car;
 	}
 
+	@Override
+	public void statusUpdate(int choice, String status) {
+		
+		Car car = getCar(choice);
+		car.setStatus(status);
+		
+	}
+
 }
