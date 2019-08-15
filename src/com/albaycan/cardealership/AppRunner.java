@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.albaycan.cardealership.domain.Car;
+import com.albaycan.cardealership.domain.CarRent;
 import com.albaycan.cardealership.domain.CarSell;
 import com.albaycan.cardealership.service.CarDealerShip;
 import com.albaycan.cardealership.service.CarDealerShipImp;
+import com.albaycan.cardealership.service.RentACar;
+import com.albaycan.cardealership.service.RentACarImp;
 import com.albaycan.cardealership.service.SellACar;
 import com.albaycan.cardealership.service.SellACarImp;
 
@@ -20,6 +23,7 @@ public class AppRunner {
 	
 	static CarDealerShip carDealerShip = new CarDealerShipImp();
 	static SellACar sellACar = new SellACarImp();
+	static RentACar rentACar = new RentACarImp();
 
 	public static void main(String[] args) {
 		
@@ -295,7 +299,7 @@ public class AppRunner {
 		String customerAddress = input.next();
 		
 		System.out.println("Customer Postcode:");
-		String customerPostcode = input.next();
+		String customerPostCode = input.next();
 		
 		System.out.println("Customer Country:");
 		String customerCountry = input.next();
@@ -306,7 +310,7 @@ public class AppRunner {
 		System.out.println("Customer Email:");
 		String customerEmail = input.next();
 		
-		CarSell carSell = new CarSell(choice, sellPrice, customerEmail, customerEmail, customerEmail, customerEmail, customerEmail, customerEmail);
+		CarSell carSell = new CarSell(choice, sellPrice, customerName, customerAddress, customerPostCode, customerCountry, customerPhone, customerEmail);
 		
 			
 		sellACar.sellACar(carSell);
@@ -322,15 +326,111 @@ public class AppRunner {
 		
 	}
 
-	private static void listSoldCars() {
-		// TODO Auto-generated method stub
+	private static String listSoldCars() {
+		
+		List<CarSell> soldCars = sellACar.listSoldCars();		
+					
+		System.out.println("***********List of All The Sold Cars************\n\n");
+		System.out.println("------|--------|-----------|-----------|------------|------------|----------------|---------------|-------------|-------------------");
+		System.out.println("CarID |SalesID |Make       |Model      |SellPrice   |CustomerName|CustomerPostCode|CustomerCountry|CustomerPhone|CustomerEmail   ");
+		System.out.println("------|--------|-----------|-----------|------------|------------|----------------|---------------|-------------|-------------------");
+		
+		for(CarSell soldCar:soldCars) {		
+		
+			Car car = carDealerShip.getCar(soldCar.getCarId());
+			
+			System.out.printf("%-6d|%-8d|%-11s|%-11s|%-10f|%-12s|%-16s|%-15s|%-13s|%-12s\n", soldCar.getCarId(), soldCar.getCarSellId(), 
+					car.getMake(), car.getModel(), soldCar.getSellPrice(), soldCar.getCustomerName(), soldCar.getCustomerPostCode(), 
+					soldCar.getCustomerCountry(), soldCar.getCustomerPhone(), soldCar.getCustomerEmail());
+		}
+		
+		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu or Press 'M' to go back to Main Menu");
+		return choiceStr = input.next();
 		
 	}
 	
 
 	public static void rentACarManager() {
 		
+		
+		do {			
+		
 		System.out.println(rentingMenuText());
+		choice = input.nextInt();
+		
+		switch (choice) {
+		
+		case 1:
+			rentACar();
+			break;
+		
+		case 2:
+			returnACar();
+			break;
+			
+		case 3:
+			listCarsWillBeReturned();
+			break;
+		}
+		
+		} while(choiceStr.equals("B"));
 					
 	}
+
+	private static String rentACar() {
+	
+		System.out.println("Please write the Id of the car you would like to rent:");
+		choice = input.nextInt();
+		
+		Car car = carDealerShip.getCar(choice);
+		
+		System.out.printf("%s %s's daily Rent Rate is %f. How many days would you like to rent it for?\n", car.getMake(), car.getModel(), car.getDailyRentPrice());
+		
+		int totalRentDay = input.nextInt();
+		double totalRentPrice = car.getDailyRentPrice() * totalRentDay;
+		
+		System.out.println("Customer Name:");		
+		String customerName = input.next();
+		
+		System.out.println("Customer Address:");
+		String customerAddress = input.next();
+		
+		System.out.println("Customer Postcode:");
+		String customerPostCode = input.next();
+		
+		System.out.println("Customer Country:");
+		String customerCountry = input.next();
+		
+		System.out.println("Customer Phone:");
+		String customerPhone = input.next();
+		
+		System.out.println("Customer Email:");
+		String customerEmail = input.next();
+		
+		
+		CarRent carRent = new CarRent(choice, totalRentPrice, totalRentDay, customerName, 
+									customerAddress, customerPostCode, customerCountry, customerPhone, customerEmail);
+		
+		
+		rentACar.rentACar(carRent);
+		
+		String status = "Rented";
+		carDealerShip.statusUpdate(choice, status);
+		
+		System.out.printf("You have rented the %s %s to %s\n", car.getMake(), car.getModel(), customerName);
+		
+		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu or Press 'M' to go back to Main Menu");
+		return choiceStr = input.next();		
+		
+	}
+
+	private static void returnACar() {
+			
+	}
+
+	private static void listCarsWillBeReturned() {
+			
+	}
+
+
 }
