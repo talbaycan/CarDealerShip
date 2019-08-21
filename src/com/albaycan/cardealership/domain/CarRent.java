@@ -1,4 +1,4 @@
-package com.albaycan.cardealership.domain;
+package src.com.albaycan.cardealership.domain;
 
 import java.time.LocalDateTime;
 

@@ -1,10 +1,9 @@
-package com.albaycan.cardealership.service;
+	package src.com.albaycan.cardealership.service;
 
 	import java.util.ArrayList;
 	import java.util.List;
-	
-	import com.albaycan.cardealership.domain.Car;
-import com.albaycan.cardealership.domain.CarSell;
+
+	import src.com.albaycan.cardealership.domain.CarSell;
 
 	public class SellACarImp implements SellACar{
 

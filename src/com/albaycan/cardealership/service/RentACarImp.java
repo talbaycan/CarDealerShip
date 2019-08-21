@@ -1,13 +1,16 @@
-package com.albaycan.cardealership.service;
+package src.com.albaycan.cardealership.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.albaycan.cardealership.domain.CarRent;
+import src.com.albaycan.cardealership.domain.CarRent;
 
 public class RentACarImp implements RentACar {
 	
-	List<CarRent> rentedCars = new ArrayList<>();
+	List<CarRent> rentedCars = new ArrayList<CarRent>();
 	
 
 	@Override
@@ -32,10 +35,23 @@ public class RentACarImp implements RentACar {
 	@Override
 	public List<CarRent> listCarsWillBeReturned() {
 		
-		List<CarRent> carsWillBeReturned = null;
+		List<CarRent> carsWillBeReturned = new ArrayList<CarRent>();
 		
+		for (CarRent rentedCar: rentedCars) {
+
+			LocalDateTime returnDate = rentedCar.getRentStartDate().plusDays(rentedCar.getTotalRentDay());
+			
+			LocalDateTime date1 = returnDate.minus(Period.ofDays(7));
+			LocalDateTime date2 = LocalDateTime.now();
+			int diff = date2.compareTo(date1);
+			
+			if (diff>=0) {
+				
+				carsWillBeReturned.add(rentedCar);				
+			}						
+		}			
+				
 		return carsWillBeReturned;
 	}
 
-
-}
+	}

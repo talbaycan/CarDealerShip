@@ -1,18 +1,20 @@
-package com.albaycan.cardealership;
+package src.com.albaycan.cardealership;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.albaycan.cardealership.domain.Car;
-import com.albaycan.cardealership.domain.CarRent;
-import com.albaycan.cardealership.domain.CarSell;
-import com.albaycan.cardealership.service.CarDealerShip;
-import com.albaycan.cardealership.service.CarDealerShipImp;
-import com.albaycan.cardealership.service.RentACar;
-import com.albaycan.cardealership.service.RentACarImp;
-import com.albaycan.cardealership.service.SellACar;
-import com.albaycan.cardealership.service.SellACarImp;
+import src.com.albaycan.cardealership.domain.Car;
+import src.com.albaycan.cardealership.domain.CarRent;
+import src.com.albaycan.cardealership.domain.CarSell;
+import src.com.albaycan.cardealership.service.CarDealerShip;
+import src.com.albaycan.cardealership.service.CarDealerShipImp;
+import src.com.albaycan.cardealership.service.RentACar;
+import src.com.albaycan.cardealership.service.RentACarImp;
+import src.com.albaycan.cardealership.service.SellACar;
+import src.com.albaycan.cardealership.service.SellACarImp;
 
 public class AppRunner {
 
@@ -409,8 +411,7 @@ public class AppRunner {
 		
 		
 		CarRent carRent = new CarRent(choice, totalRentPrice, totalRentDay, customerName, 
-									customerAddress, customerPostCode, customerCountry, customerPhone, customerEmail);
-		
+									customerAddress, customerPostCode, customerCountry, customerPhone, customerEmail);		
 		
 		rentACar.rentACar(carRent);
 		
@@ -419,16 +420,52 @@ public class AppRunner {
 		
 		System.out.printf("You have rented the %s %s to %s\n", car.getMake(), car.getModel(), customerName);
 		
-		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu or Press 'M' to go back to Main Menu");
+		System.out.println("\nPress 'B' to go back to Rent A Car Manager Menu or Press 'M' to go back to Main Menu");
 		return choiceStr = input.next();		
 		
 	}
 
-	private static void returnACar() {
+	private static String returnACar() {
 			
+		System.out.println("Please write the Id of the car you would like to return:");
+		choice = input.nextInt();
+		
+		rentACar.returnACar(choice);
+		String status = "New";
+		carDealerShip.statusUpdate(choice, status);
+		
+		Car car = carDealerShip.getCar(choice);
+		
+		System.out.printf("You have returned the %s %s\n", car.getMake(), car.getModel());
+		
+		System.out.println("\nPress 'B' to go back to Rent A Car Manager Menu or Press 'M' to go back to Main Menu");
+		return choiceStr = input.next();	
 	}
 
-	private static void listCarsWillBeReturned() {
+	private static String listCarsWillBeReturned() {
+		
+		List<CarRent> carsWillBeReturned = rentACar.listCarsWillBeReturned();		
+		
+		System.out.println("***********List of All The Cars Will be Returned in A Week************\n\n");
+		System.out.println("------|-----------|-----------|----------------|----------|------------|-----------|---------");
+		System.out.println("CarID |Make       |Model      |Return Date     |Fuel      |Rent Price  |Transm.    |Reg Y.   ");
+		System.out.println("------|-----------|-----------|----------------|----------|------------|-----------|---------");
+				
+		for(CarRent carsWillBeReturne: carsWillBeReturned) {		
+		
+			Car car = carDealerShip.getCar(carsWillBeReturne.getCarId());
+			
+			LocalDateTime returnDate = carsWillBeReturne.getRentStartDate().plusDays(carsWillBeReturne.getTotalRentDay());
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+			String formatDateTime = returnDate.format(formatter);
+			
+			System.out.printf("%-6d|%-11s|%-11s|%-11s|%-10s|%-12f|%-11s|%-11s\n", carsWillBeReturne.getCarId(), car.getMake(), car.getModel(), 
+					formatDateTime, car.getFuel(), car.getDailyRentPrice(), car.getTransmission(), car.getRegistrationYear());
+		}
+		
+		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu or Press 'M' to go back to Main Menu");
+		return choiceStr = input.next();
+		
 			
 	}
 

@@ -3,7 +3,7 @@ package src.com.albaycan.cardealership.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import src.com.albaycan.cardealership.domain.Car;
+import com.albaycan.cardealership.domain.Car;
 
 public class CarDealerShipImp implements CarDealerShip {
 
