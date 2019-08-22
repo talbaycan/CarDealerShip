@@ -12,13 +12,13 @@ public class CarRent {
 	private String customerName;
 	private String customerAddress;
 	private String customerPostCode;
-	private String customerCountry;
+	private CustomerCountry customerCountry;
 	private String customerPhone;
 	private String customerEmail;
 	
 	
 	public CarRent(int carId, double totalRentPrice, int totalRentDay, String customerName, String customerAddress,
-			String customerPostCode, String customerCountry, String customerPhone, String customerEmail) {
+			String customerPostCode, CustomerCountry customerCountry, String customerPhone, String customerEmail) {
 
 		this.carRentId = (int)(Math.random()* 100+1);
 		this.carId = carId;
@@ -94,12 +94,12 @@ public class CarRent {
 	}
 
 
-	public String getCustomerCountry() {
+	public CustomerCountry getCustomerCountry() {
 		return customerCountry;
 	}
 
 
-	public void setCustomerCountry(String customerCountry) {
+	public void setCustomerCountry(CustomerCountry customerCountry) {
 		this.customerCountry = customerCountry;
 	}
 

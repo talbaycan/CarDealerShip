@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Car {
 	
 	private int id;
-	private String make;
+	private Make make;
 	private String model; 
 	private String fuel;
 	private double RRP;
@@ -15,16 +15,16 @@ public class Car {
 	private String transmission; 
 	private String registrationYear;
 	private String colour;
-	private List<String> modification;
-	private String status;
+	private List<ModificationType> modification;
+	private Status status;
 	private LocalDateTime createDateTime;
 	
 	public Car () {
 		
 	}
 	
-	public Car(String make, String model, String fuel, double RRP, double dailyRentPrice, String transmission,
-			String registrationYear, String colour, List<String> modification, String status) {
+	public Car(Make make, String model, String fuel, double RRP, double dailyRentPrice, String transmission,
+			String registrationYear, String colour, List<ModificationType> modification, Status status) {
 		
 		this.id = (int)(Math.random()* 1000+1); 
 		this.make = make;
@@ -40,11 +40,11 @@ public class Car {
 		this.createDateTime = LocalDateTime.now();
 	}
 	
-	public String getMake() {
+	public Make getMake() {
 		return make;
 	}
 
-	public void setMake(String make) {
+	public void setMake(Make make) {
 		this.make = make;
 	}
 
@@ -104,19 +104,19 @@ public class Car {
 		this.colour = colour;
 	}
 
-	public List<String> getModification() {
+	public List<ModificationType> getModification() {
 		return modification;
 	}
 
-	public void setModification(List<String> modification) {
+	public void setModification(List<ModificationType> modification) {
 		this.modification = modification;
 	}
 
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 

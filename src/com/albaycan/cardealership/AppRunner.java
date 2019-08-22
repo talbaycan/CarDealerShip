@@ -9,6 +9,10 @@ import java.util.Scanner;
 import src.com.albaycan.cardealership.domain.Car;
 import src.com.albaycan.cardealership.domain.CarRent;
 import src.com.albaycan.cardealership.domain.CarSell;
+import src.com.albaycan.cardealership.domain.CustomerCountry;
+import src.com.albaycan.cardealership.domain.Make;
+import src.com.albaycan.cardealership.domain.ModificationType;
+import src.com.albaycan.cardealership.domain.Status;
 import src.com.albaycan.cardealership.service.CarDealerShip;
 import src.com.albaycan.cardealership.service.CarDealerShipImp;
 import src.com.albaycan.cardealership.service.RentACar;
@@ -133,10 +137,10 @@ public class AppRunner {
 	
 	public static String addCar() {
 		
-		System.out.println("Please write Car's Make:");
+		System.out.println("Please write Car's Make: (AUDI, BMW, MERCEDES or PORSCHE)");
 		choiceStr = input.next();
 					
-		String make= choiceStr;
+		Make make= Make.valueOf(choiceStr);
 		
 		System.out.println("Please write Car's Model:");
 		choiceStr = input.next();
@@ -173,14 +177,14 @@ public class AppRunner {
 			
 		String colour= choiceStr;
 	
-		System.out.println("Please write Car's Modification:");
+		System.out.println("Please write Car's Modification:(LEATHERSEATS, PARKSENSORS or SUNROOF)");
 		choiceStr = input.next();
 		input.nextLine();
 					
-		List<String> modification = new ArrayList<String>();
-		modification.add(choiceStr);
+		List<ModificationType> modification = new ArrayList<ModificationType>();
+		modification.add(ModificationType.valueOf(choiceStr));
 			
-		String status= "New";
+		Status status= Status.NEW;
 		
 		Car car= new Car(make, model, fuel, RRP, dailyRentPrice, transmission, registrationYear, colour, modification, status);
 		
@@ -233,10 +237,11 @@ public class AppRunner {
 	
 	public static String addDummyCar() {
 							
-		List<String> modification = new ArrayList<String>();
-		modification.add("Leather Seat");
+		List<ModificationType> modification = new ArrayList<ModificationType>();
+		modification.add(ModificationType.SUNROOF);
+		modification.add(ModificationType.LEATHERSEATS);
 		
-		Car car = new Car("Porsche", "Cayenne", "Petrol", 50000.00, 250.00, "Automatic", "2011", "Dark Blue", modification, "New");
+		Car car = new Car(Make.PORSCHE, "Cayenne", "Petrol", 50000.00, 250.00, "Automatic", "2011", "Dark Blue", modification, Status.NEW);
 		
 		carDealerShip.addCar(car);
 		
@@ -282,12 +287,12 @@ public class AppRunner {
 			
 		car = carDealerShip.getCar(choice);
 		
-		if (car.getStatus().equals("Sold") || car.getStatus().equals("Rented")) {
+		if (car.getStatus().equals(Status.SOLD) || car.getStatus().equals(Status.RENTED)) {
 			System.out.printf("This car is %s already, please try a different car\n", car.getStatus());
 			choice = input.nextInt();
 		}
 
-		} while (car.getStatus().equals("Sold") || car.getStatus().equals("Rented"));
+		} while (car.getStatus().equals(Status.SOLD) || car.getStatus().equals(Status.RENTED));
 		
 
 		System.out.printf("You are selling a %s %s\n", car.getMake(), car.getModel());
@@ -303,8 +308,9 @@ public class AppRunner {
 		System.out.println("Customer Postcode:");
 		String customerPostCode = input.next();
 		
-		System.out.println("Customer Country:");
-		String customerCountry = input.next();
+		System.out.println("Customer Country: (UNITEDKINGDOM, USA OR FRANCE)");
+		String customerCountryStr = input.next();
+		CustomerCountry customerCountry = CustomerCountry.valueOf(customerCountryStr);
 		
 		System.out.println("Customer Phone:");
 		String customerPhone = input.next();
@@ -317,7 +323,7 @@ public class AppRunner {
 			
 		sellACar.sellACar(carSell);
 		
-		String status = "Sold";
+		Status status = Status.SOLD;
 		carDealerShip.statusUpdate(choice, status);
 		
 		System.out.printf("You have sold the %s %s to %s\n", car.getMake(), car.getModel(), customerName);
@@ -400,8 +406,9 @@ public class AppRunner {
 		System.out.println("Customer Postcode:");
 		String customerPostCode = input.next();
 		
-		System.out.println("Customer Country:");
-		String customerCountry = input.next();
+		System.out.println("Customer Country: (UNITEDKINGDOM, USA OR FRANCE)");
+		String customerCountryStr = input.next();
+		CustomerCountry customerCountry = CustomerCountry.valueOf(customerCountryStr);
 		
 		System.out.println("Customer Phone:");
 		String customerPhone = input.next();
@@ -415,7 +422,7 @@ public class AppRunner {
 		
 		rentACar.rentACar(carRent);
 		
-		String status = "Rented";
+		Status status = Status.RENTED;
 		carDealerShip.statusUpdate(choice, status);
 		
 		System.out.printf("You have rented the %s %s to %s\n", car.getMake(), car.getModel(), customerName);
@@ -431,7 +438,7 @@ public class AppRunner {
 		choice = input.nextInt();
 		
 		rentACar.returnACar(choice);
-		String status = "New";
+		Status status = Status.NEW;
 		carDealerShip.statusUpdate(choice, status);
 		
 		Car car = carDealerShip.getCar(choice);

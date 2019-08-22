@@ -3,6 +3,7 @@ package src.com.albaycan.cardealership.service;
 import java.util.List;
 
 import src.com.albaycan.cardealership.domain.Car;
+import src.com.albaycan.cardealership.domain.Status;
 
 public interface CarDealerShip {
 
@@ -10,6 +11,6 @@ public interface CarDealerShip {
 	void modifyCar(int choice, String choiceStr);
 	List<Car> listAllCars();
 	Car getCar(int choice);
-	void statusUpdate(int choice, String status);
+	void statusUpdate(int choice, Status status);
 	
 }

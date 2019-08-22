@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import src.com.albaycan.cardealership.domain.Car;
+import src.com.albaycan.cardealership.domain.ModificationType;
+import src.com.albaycan.cardealership.domain.Status;
 
 public class CarDealerShipImp implements CarDealerShip {
 
@@ -21,8 +23,8 @@ public class CarDealerShipImp implements CarDealerShip {
 		
 		Car car = getCar(choice);
 		
-		List<String> modification =car.getModification();
-		modification.add(choiceStr);
+		List<ModificationType> modification =car.getModification();
+		modification.add(ModificationType.valueOf(choiceStr));
 		car.setModification(modification);
 		carList.removeIf(i->i.getId()==choice);
 		addCar(car);
@@ -45,7 +47,7 @@ public class CarDealerShipImp implements CarDealerShip {
 	}
 
 	@Override
-	public void statusUpdate(int choice, String status) {
+	public void statusUpdate(int choice, Status status) {
 		
 		Car car = getCar(choice);
 		car.setStatus(status);

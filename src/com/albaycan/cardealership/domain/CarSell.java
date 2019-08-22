@@ -10,14 +10,14 @@ public class CarSell {
 	String customerName;
 	String customerAddress;
 	String customerPostCode; 
-	String customerCountry; 
+	CustomerCountry customerCountry; 
 	String customerPhone;
 	String customerEmail;
 	LocalDateTime saleDate;
 	
 	
 	public CarSell(int carId, double sellPrice, String customerName, String customerAddress, String customerPostCode,
-			String customerCountry, String customerPhone, String customerEmail) {
+			CustomerCountry customerCountry, String customerPhone, String customerEmail) {
 
 		this.carSellId = (int)(Math.random()* 500 +1); 
 		this.carId = carId;
@@ -72,12 +72,12 @@ public class CarSell {
 	}
 
 
-	public String getCustomerCountry() {
+	public CustomerCountry getCustomerCountry() {
 		return customerCountry;
 	}
 
 
-	public void setCustomerCountry(String customerCountry) {
+	public void setCustomerCountry(CustomerCountry customerCountry) {
 		this.customerCountry = customerCountry;
 	}
 
