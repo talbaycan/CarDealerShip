@@ -49,7 +49,10 @@ public class AppRunner {
 		case 3:
 			rentACarManager();			
 			break;
-
+		default:
+			System.out.println("This choice was not on the menu, please make another choice");
+			choiceStr = "M";
+			break;
 		}
 		
 		} while(choiceStr.equals("M"));
@@ -126,6 +129,10 @@ public class AppRunner {
 		case 4:
 			addDummyCar();
 			break;
+		default:
+			System.out.println("This choice was not on the menu, please make another choice");
+			choiceStr = "B";
+			break;
 		
 		}
 		
@@ -137,10 +144,22 @@ public class AppRunner {
 	
 	public static String addCar() {
 		
+		Make make = null;
+		
+		do {			
+		
 		System.out.println("Please write Car's Make: (AUDI, BMW, MERCEDES or PORSCHE)");
 		choiceStr = input.next();
-					
-		Make make= Make.valueOf(choiceStr);
+		
+		if (choiceStr.equals("AUDI") || choiceStr.equals("BMW") || choiceStr.equals("MERCEDES")  || choiceStr.equals("PORSCHE")) {
+		
+		make= Make.valueOf(choiceStr);
+		
+		} else {
+			System.out.println("This is NOT one of The Authorized Makes");
+		}		
+		
+		} while (!choiceStr.equals("AUDI") && !choiceStr.equals("BMW") && !choiceStr.equals("MERCEDES")  && !choiceStr.equals("PORSCHE"));
 		
 		System.out.println("Please write Car's Model:");
 		choiceStr = input.next();
@@ -177,13 +196,24 @@ public class AppRunner {
 			
 		String colour= choiceStr;
 	
+		List<ModificationType> modification = new ArrayList<ModificationType>();
+		
+		do {
+
 		System.out.println("Please write Car's Modification:(LEATHERSEATS, PARKSENSORS or SUNROOF)");
 		choiceStr = input.next();
-		input.nextLine();
-					
-		List<ModificationType> modification = new ArrayList<ModificationType>();
-		modification.add(ModificationType.valueOf(choiceStr));
+		//input.nextLine();
+		
+			if (choiceStr.equals("LEATHERSEATS") || choiceStr.equals("PARKSENSORS") || choiceStr.equals("SUNROOF")) {
+						
+			modification.add(ModificationType.valueOf(choiceStr));
 			
+			} else {
+				System.out.println("This is NOT one of The Authorized Modification");
+			}
+		
+		} while (!choiceStr.equals("LEATHERSEATS") && !choiceStr.equals("PARKSENSORS") && !choiceStr.equals("SUNROOF"));
+		
 		Status status= Status.NEW;
 		
 		Car car= new Car(make, model, fuel, RRP, dailyRentPrice, transmission, registrationYear, colour, modification, status);
@@ -199,17 +229,43 @@ public class AppRunner {
 	
 	public static String modifyCar() {
 		
+		do {
+
 		System.out.println("Please write the ID of the car you would like to modify:");
 		choice = input.nextInt();
 		
+			if (carDealerShip.carExist(choice) == false) {
+				System.out.println("This car is not in your stock");
+			}			
+			
+		} while(carDealerShip.carExist(choice) == false);
+		
 		Car car = carDealerShip.getCar(choice);
 		
-		System.out.printf("Please write the Modification for %s %s:\n", car.getMake(), car.getModel());
+		do {
+		
+		System.out.printf("Please write the Modification to fit your %s %s:(LEATHERSEATS, PARKSENSORS or SUNROOF)\n", car.getMake(), car.getModel());
 		choiceStr = input.next();
 		
-		carDealerShip.modifyCar(choice, choiceStr);
+		if (choiceStr.equals("LEATHERSEATS") || choiceStr.equals("PARKSENSORS") || choiceStr.equals("SUNROOF")) {
+			
+			if (carDealerShip.checkModification(choice, choiceStr)==false) {
+				
+				carDealerShip.modifyCar(choice, choiceStr);			
+				System.out.printf("%s modification has been added to your %s %s\n", choiceStr, car.getMake(), car.getModel());
+
+			} else {
+				System.out.println("This modification is already fitted");
+			}
+			
+		} else {
+			
+			System.out.println("This is NOT one of The Authorized Modification");		
+			
+		}
 		
-		System.out.printf("%s modification has been added to your %s %s\n", choiceStr, car.getMake(), car.getModel());
+		} while (!choiceStr.equals("LEATHERSEATS") && !choiceStr.equals("PARKSENSORS") && !choiceStr.equals("SUNROOF"));
+		
 		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu or Press 'M' to go back to Main Menu");
 		return choiceStr = input.next();
 	}
@@ -219,14 +275,15 @@ public class AppRunner {
 		List<Car> carList = carDealerShip.listAllCars();		
 		
 		System.out.println("***********List of All The Cars************\n\n");
-		System.out.println("------|------------|------------|--------|------------|----------|----------|------|------------");
-		System.out.println("Id    |Make        |Model       |Fuel    |RRP         |Rent Price|Transm.   |Reg Y.|Status      ");
-		System.out.println("------|------------|------------|--------|------------|----------|----------|------|------------");
+		System.out.println("------|------------|------------|--------|-------------|-----------|----------|------|------------");
+		System.out.println("Id    |Make        |Model       |Fuel    |RRP          |Rent Price |Transm.   |Reg Y.|Status      ");
+		System.out.println("------|------------|------------|--------|-------------|-----------|----------|------|------------");
+		
 		
 		for(Car car:carList) {		
 		
-			System.out.printf("%-6d|%-12s|%-12s|%-8s|%-10f|%-6f|%-10s|%-6s|%-12s\n", car.getId(), car.getMake(), car.getModel(), car.getFuel(), car.getRRP()
-					, car.getDailyRentPrice(), car.getTransmission(), car.getRegistrationYear(), car.getStatus());
+			System.out.printf("%-6d|%-12s|%-12s|%-8s|£%-10f|£%-6f|%-10s|%-6s|%-12s\n", car.getId(), car.getMake(), car.getModel(), car.getFuel(), 
+					car.getRRP(), car.getDailyRentPrice(), car.getTransmission(), car.getRegistrationYear(), car.getStatus());
 		}
 		
 		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu or Press 'M' to go back to Main Menu");
@@ -267,6 +324,11 @@ public class AppRunner {
 			
 		case 2:
 			listSoldCars();
+			break;
+		
+		default:
+			System.out.println("This choice was not on the menu, please make another choice");
+			choiceStr = "B";
 			break;
 		}
 		
@@ -378,6 +440,11 @@ public class AppRunner {
 			
 		case 3:
 			listCarsWillBeReturned();
+			break;
+			
+		default:
+			System.out.println("This choice was not on the menu, please make another choice");
+			choiceStr = "B";
 			break;
 		}
 		

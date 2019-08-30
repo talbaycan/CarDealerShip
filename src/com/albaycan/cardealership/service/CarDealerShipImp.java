@@ -23,12 +23,12 @@ public class CarDealerShipImp implements CarDealerShip {
 		
 		Car car = getCar(choice);
 		
-		List<ModificationType> modification =car.getModification();
+		List<ModificationType> modification =car.getModification();			
+			
 		modification.add(ModificationType.valueOf(choiceStr));
 		car.setModification(modification);
 		carList.removeIf(i->i.getId()==choice);
-		addCar(car);
-
+		addCar(car);			
 	}
 
 	@Override
@@ -53,5 +53,22 @@ public class CarDealerShipImp implements CarDealerShip {
 		car.setStatus(status);
 		
 	}
+
+	@Override
+	public boolean checkModification(int choice, String choiceStr) {
+		
+		Car car = getCar(choice);
+		
+		List<ModificationType> modification =car.getModification();
+		
+		return modification.stream().anyMatch(x -> x == ModificationType.valueOf(choiceStr));
+	}
+
+	@Override
+	public boolean carExist(int choice) {
+		
+		return carList.stream().anyMatch(x -> x.getId() == choice);
+	}
+
 
 }
