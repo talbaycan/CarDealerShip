@@ -19,7 +19,7 @@ public class CarSell {
 	public CarSell(int carId, double sellPrice, String customerName, String customerAddress, String customerPostCode,
 			CustomerCountry customerCountry, String customerPhone, String customerEmail) {
 
-		this.carSellId = (int)(Math.random()* 500 +1); 
+		this.carSellId = carSellId; 
 		this.carId = carId;
 		this.sellPrice = sellPrice;
 		this.customerName = customerName;
@@ -119,6 +119,10 @@ public class CarSell {
 
 	public double getSellPrice() {
 		return sellPrice;
+	}
+	
+	public void setCarSellId(int carSellId) {
+		this.carSellId = carSellId;
 	}
 	
 	

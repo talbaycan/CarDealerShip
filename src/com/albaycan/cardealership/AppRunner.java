@@ -31,7 +31,9 @@ public class AppRunner {
 	static SellACar sellACar = new SellACarImp();
 	static RentACar rentACar = new RentACarImp();
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {		
+		
+		
 		
 		do {
 		
@@ -109,7 +111,7 @@ public class AppRunner {
 		return sb.toString();
 	}
 	
-	public static String carDealerShipManager() {		
+	public static String carDealerShipManager() throws Exception {		
 
 		do {			
 			
@@ -142,7 +144,7 @@ public class AppRunner {
 					
 	}
 	
-	public static String addCar() {
+	public static String addCar() throws Exception {
 		
 		Make make = null;
 		
@@ -201,8 +203,7 @@ public class AppRunner {
 		do {
 
 		System.out.println("Please write Car's Modification:(LEATHERSEATS, PARKSENSORS or SUNROOF)");
-		choiceStr = input.next();
-		//input.nextLine();
+		choiceStr = input.next();		
 		
 			if (choiceStr.equals("LEATHERSEATS") || choiceStr.equals("PARKSENSORS") || choiceStr.equals("SUNROOF")) {
 						
@@ -218,16 +219,16 @@ public class AppRunner {
 		
 		Car car= new Car(make, model, fuel, RRP, dailyRentPrice, transmission, registrationYear, colour, modification, status);
 		
-		carDealerShip.addCar(car);
+		int id = carDealerShip.addCar(car);
 		
-		System.out.printf("The car has been added to the system with %d id\n\n", car.getId());
+		System.out.printf("The car has been added to the system with %d id\n\n", id);
 		
 		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu or Press 'M' to go back to Main Menu");
 		return choiceStr = input.next();
 		
 	}
 	
-	public static String modifyCar() {
+	public static String modifyCar() throws Exception {
 		
 		do {
 
@@ -270,7 +271,7 @@ public class AppRunner {
 		return choiceStr = input.next();
 	}
 	
-	public static String listAllCars() {
+	public static String listAllCars() throws Exception {
 		
 		List<Car> carList = carDealerShip.listAllCars();		
 		
@@ -292,24 +293,24 @@ public class AppRunner {
 	}
 	
 	
-	public static String addDummyCar() {
+	public static String addDummyCar() throws Exception {
 							
 		List<ModificationType> modification = new ArrayList<ModificationType>();
 		modification.add(ModificationType.SUNROOF);
 		modification.add(ModificationType.LEATHERSEATS);
 		
 		Car car = new Car(Make.PORSCHE, "Cayenne", "Petrol", 50000.00, 250.00, "Automatic", "2011", "Dark Blue", modification, Status.NEW);
+				
+		int id = carDealerShip.addCar(car);
 		
-		carDealerShip.addCar(car);
-		
-		System.out.printf("Your dummy car has been added to the system with %d id\n\n", car.getId());
+		System.out.printf("Your dummy car has been added to the system with %d id\n\n", id);
 		
 		System.out.println("\nPress 'B' to go back to Car DealerShip Manager Menu or Press 'M' to go back to Main Menu");
 		return choiceStr = input.next();
 	}
 	
 	
-	public static void sellACarManager() {
+	public static void sellACarManager() throws Exception {
 		
 		do {
 		
@@ -337,7 +338,7 @@ public class AppRunner {
 	}
 	
 
-	private static String sellACar() {
+	private static String sellACar() throws Exception {
 	
 			
 		System.out.println("Please write the Id of the car you would like to sell:");
@@ -350,7 +351,7 @@ public class AppRunner {
 		car = carDealerShip.getCar(choice);
 		
 		if (car.getStatus().equals(Status.SOLD) || car.getStatus().equals(Status.RENTED)) {
-			System.out.printf("This car is %s already, please try a different car\n", car.getStatus());
+			System.out.printf("This car is %s, please try a different car\n", car.getStatus());
 			choice = input.nextInt();
 		}
 
@@ -396,7 +397,7 @@ public class AppRunner {
 		
 	}
 
-	private static String listSoldCars() {
+	private static String listSoldCars() throws Exception {
 		
 		List<CarSell> soldCars = sellACar.listSoldCars();		
 					
@@ -420,7 +421,7 @@ public class AppRunner {
 	}
 	
 
-	public static void rentACarManager() {
+	public static void rentACarManager() throws Exception {
 		
 		
 		do {			
@@ -452,7 +453,7 @@ public class AppRunner {
 					
 	}
 
-	private static String rentACar() {
+	private static String rentACar() throws Exception {
 	
 		System.out.println("Please write the Id of the car you would like to rent:");
 		choice = input.nextInt();
@@ -499,7 +500,7 @@ public class AppRunner {
 		
 	}
 
-	private static String returnACar() {
+	private static String returnACar() throws Exception {
 			
 		System.out.println("Please write the Id of the car you would like to return:");
 		choice = input.nextInt();
@@ -516,7 +517,7 @@ public class AppRunner {
 		return choiceStr = input.next();	
 	}
 
-	private static String listCarsWillBeReturned() {
+	private static String listCarsWillBeReturned() throws Exception {
 		
 		List<CarRent> carsWillBeReturned = rentACar.listCarsWillBeReturned();		
 		

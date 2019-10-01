@@ -20,7 +20,7 @@ public class CarRent {
 	public CarRent(int carId, double totalRentPrice, int totalRentDay, String customerName, String customerAddress,
 			String customerPostCode, CustomerCountry customerCountry, String customerPhone, String customerEmail) {
 
-		this.carRentId = (int)(Math.random()* 100+1);
+		// this.carRentId = (int)(Math.random()* 100+1);
 		this.carId = carId;
 		this.totalRentPrice = totalRentPrice;
 		this.totalRentDay = totalRentDay;
@@ -30,7 +30,12 @@ public class CarRent {
 		this.customerCountry = customerCountry;
 		this.customerPhone = customerPhone;
 		this.customerEmail = customerEmail;
-		this.rentStartDate = LocalDateTime.now();
+		this.rentStartDate = rentStartDate;
+	}
+
+
+	public void setRentStartDate(LocalDateTime rentStartDate) {
+		this.rentStartDate = rentStartDate;
 	}
 
 

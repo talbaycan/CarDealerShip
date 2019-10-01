@@ -26,7 +26,7 @@ public class Car {
 	public Car(Make make, String model, String fuel, double RRP, double dailyRentPrice, String transmission,
 			String registrationYear, String colour, List<ModificationType> modification, Status status) {
 		
-		this.id = (int)(Math.random()* 1000+1); 
+		this.id = id; 
 		this.make = make;
 		this.model = model;
 		this.fuel = fuel;
@@ -40,6 +40,14 @@ public class Car {
 		this.createDateTime = LocalDateTime.now();
 	}
 	
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setCreateDateTime(LocalDateTime createDateTime) {
+		this.createDateTime = createDateTime;
+	}
+
 	public Make getMake() {
 		return make;
 	}
@@ -69,7 +77,7 @@ public class Car {
 	}
 
 	public void setRRP(double rRP) {
-		RRP = RRP;
+		this.RRP = rRP;
 	}
 
 	public double getDailyRentPrice() {
